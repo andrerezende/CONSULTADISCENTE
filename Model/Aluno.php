@@ -21,7 +21,7 @@ class Aluno extends AppModel {
 		if ($pass == AuthComponent::password($data[$this->alias]['senha_atual'])) {
 			if ($data[$this->alias]['nova_senha'] == $data[$this->alias]['confirmar_senha']) {
 				$this->set(array('senha' => $data[$this->alias]['nova_senha']));
-				return true;
+				return $this->save();
 			}
 		}
 		return false;
