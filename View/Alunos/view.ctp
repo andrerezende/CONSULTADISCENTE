@@ -24,6 +24,5 @@
 		<li><?php echo $this->Html->link(__('Editar Aluno'), array('action' => 'edit', $aluno['Aluno']['id'])); ?> </li>
 		<li><?php echo $this->Form->postLink(__('Excluir Aluno'), array('action' => 'delete', $aluno['Aluno']['id']), null, __('Você tem certeza que deseja excluir o # %s?', $aluno['Aluno']['id'])); ?> </li>
 		<li><?php echo $this->Html->link(__('Listar Alunos'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo Aluno'), array('action' => 'add')); ?> </li>
 	</ul>
 </div>

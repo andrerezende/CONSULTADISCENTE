@@ -38,23 +38,6 @@ class AlunosController extends AppController {
 	}
 
 /**
- * add method
- *
- * @return void
- */
-	public function add() {
-		if ($this->request->is('post')) {
-			$this->Aluno->create();
-			if ($this->Aluno->save($this->request->data)) {
-				$this->Session->setFlash(__('O aluno foi salvo.'), 'flash_auth');
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('O aluno não pode ser salvo. Por favor, tente novamente.'));
-			}
-		}
-	}
-
-/**
  * edit method
  *
  * @param string $id
