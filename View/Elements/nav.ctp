@@ -39,7 +39,7 @@
 							<li class="divider-vertical"></li>
 						<?php else:?>
 							<li class="divider-vertical"></li>
-							<li><?php echo $this->Html->link('Entrar', array('controller' => 'usuarios', 'action' => 'login'));?></li>
+							<li><?php echo $this->Html->link('Entrar', array('controller' => 'alunos', 'action' => 'login'));?></li>
 						<?php endif;?>
 					</ul>
 				</div>
