@@ -19,68 +19,8 @@ class AlunosController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Aluno->recursive = 0;
-		$this->set('alunos', $this->paginate());
 	}
 
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->Aluno->id = $id;
-		if (!$this->Aluno->exists()) {
-			throw new NotFoundException(__('Aluno inválido'));
-		}
-		$this->set('aluno', $this->Aluno->read(null, $id));
-	}
-
-/**
- * edit method
- *
- * @param string $id
- * @return void
- */
-	public function edit($id = null) {
-		$this->Aluno->id = $id;
-		if (!$this->Aluno->exists()) {
-			throw new NotFoundException(__('Aluno inválido.'));
-		}
-		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->Aluno->save($this->request->data)) {
-				$this->Session->setFlash(__('O aluno foi salvo.'), 'flash_auth');
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('O aluno não pode ser salvo. Por favor, tente novamente.'), 'flash_auth');
-			}
-		} else {
-			$this->request->data = $this->Aluno->read(null, $id);
-		}
-	}
-
-/**
- * delete method
- *
- * @param string $id
- * @return void
- */
-	public function delete($id = null) {
-		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
-		$this->Aluno->id = $id;
-		if (!$this->Aluno->exists()) {
-			throw new NotFoundException(__('aluno inválido.'));
-		}
-		if ($this->Aluno->delete()) {
-			$this->Session->setFlash(__('Aluno excluído.'), 'flash_auth');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->Session->setFlash(__('Aluno não pode ser excluído.'), 'flash_auth');
-		$this->redirect(array('action' => 'index'));
-	}
 
 /**
  * login method
