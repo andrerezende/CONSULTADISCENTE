@@ -19,6 +19,7 @@ class AppController extends Controller {
 		'Time',
 		'Util',
 		'Js' => array('Jquery'),
+		'CakePtbr.Formatacao',
 	);
 
 	public $components = array(
