@@ -19,7 +19,8 @@
 				echo $this->Form->input('ano_letivo');
 				echo $this->Form->input('unidade');
 				echo $this->Form->input('turno');
-				echo $this->Form->end('Enviar');
+				echo $this->Form->submit('Enviar', array('class' => 'btn btn-primary'));
+				echo $this->Form->end();
 				?>
 			</div>
 			<div id="faltas" class="tab-pane">
@@ -27,14 +28,16 @@
 				echo $this->Form->create();
 				echo $this->Form->input('ano_letivo');
 				echo $this->Form->input('unidade');
-				echo $this->Form->end('Enviar');
+				echo $this->Form->submit('Enviar', array('class' => 'btn btn-primary'));
+				echo $this->Form->end();
 				?>
 			</div>
 			<div id="conteudo-programatico" class="tab-pane">
 				<?php
 				echo $this->Form->create();
 				echo $this->Form->input('ano_letivo');
-				echo $this->Form->end('Enviar');
+				echo $this->Form->submit('Enviar', array('class' => 'btn btn-primary'));
+				echo $this->Form->end();
 				?>
 			</div>
 		</div>
