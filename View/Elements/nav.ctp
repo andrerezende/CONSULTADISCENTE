@@ -9,15 +9,14 @@
 			<?php echo $this->Html->link('Sistema de Consultas para Estudantes', '/', array('class' => 'brand'));?>
 			<div class="nav-collapse">
 				<div class="nav-collapse">
-					<ul class="nav pull-right">
-						<?php if (isset($userData) && !empty($userData)) :?>
+					<?php if (isset($userData) && !empty($userData)) :?>
+						<div class="label label-info pull-left">
+							<i class="icon-time icon-white"></i> Último login: <?php echo $this->Formatacao->dataCompleta($userData['ultimo_login']);?>
+						</div>
+						<ul class="nav pull-right">
 							<li>
 								<p class="navbar-text">
-									<i class="icon-user icon-white"></i> <?php echo $this->Html->link(
-										//$this->Util->cpf($userData['cpf']),
-											'',
-										array('controller' => 'alunos', 'action' => 'edit', $userData['id']
-									));?>
+									<i class="icon-user icon-white"></i>  <?php echo $this->Util->cpf($userData['cpf']);?>
 								</p>
 							</li>
 							<li class="divider-vertical"></li>
@@ -37,10 +36,13 @@
 								</p>
 							</li>
 							<li class="divider-vertical"></li>
-						<?php else:?>
+						</ul>
+					<?php else:?>
+						<ul class="nav pull-right">
 							<li class="divider-vertical"></li>
 							<li><?php echo $this->Html->link('Entrar', array('controller' => 'alunos', 'action' => 'login'));?></li>
-						<?php endif;?>
+						</ul>
+					<?php endif;?>
 					</ul>
 				</div>
 			</div>
