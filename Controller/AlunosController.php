@@ -19,6 +19,34 @@ class AlunosController extends AppController {
  * @return void
  */
 	public function index() {
+
+	}
+
+	public function cursos() {
+		if ($this->request->is('ajax')) {
+			return new CakeResponse(array(
+				'body' => json_encode($this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.n_matricula'))),
+				'type' => 'json',
+			));
+		}
+	}
+
+	public function notas() {
+		if ($this->request->is('ajax')) {
+			return new CakeResponse(array(
+				'body' => json_encode($this->Aluno->getAlunoNotas($this->Session->read('Aluno.Matricula.id_matricula'))),
+				'type' => 'json',
+			));
+		}
+	}
+
+	public function faltas() {
+		if ($this->request->is('ajax')) {
+			return new CakeResponse(array(
+				'body' => json_encode($this->Aluno->getAlunoFaltas($this->Session->read('Aluno.Matricula.id_matricula'))),
+				'type' => 'json',
+			));
+		}
 	}
 
 
@@ -34,6 +62,8 @@ class AlunosController extends AppController {
 			if ($this->Auth->login()) {
 				$this->Aluno->id = $this->Auth->user('id');
 				$this->Aluno->saveField('ultimo_login', date('Y-m-d H:i:s'));
+
+				$this->Session->write('Aluno.Matricula', $this->Aluno->findMatriculaAluno());
 
 				$this->Session->setFlash('Login feito com sucesso', 'flash_auth', array(), 'auth');
 				$this->redirect($this->Auth->redirect());

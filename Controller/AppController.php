@@ -27,6 +27,7 @@ class AppController extends Controller {
 		'Session',
 		'Paginator',
 		'DebugKit.Toolbar',
+		'RequestHandler',
 	);
 
 	public $layout = 'default';
