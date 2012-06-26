@@ -97,7 +97,8 @@ SELECT
 	mt.id AS ID_MATRICULA,
 	mt.numero AS N_MATRICULA,
 	mc.id AS ID_MATRIZ,
-	cu.nome AS CURSO
+	cu.nome AS CURSO,
+	cu.id AS ID_CURSO
 FROM
 	matricula mt,
 	matriz_curricular mc,
@@ -110,11 +111,18 @@ QUERY;
 		$result = $this->query($query);
 		$this->resetDb();
 
-		return $result;
+		$list = array();
+		foreach ($result as $res) {
+			$list += Set::combine($res, '{n}.id_curso', '{n}.curso');
+		}
+		return $list;
 	}
 
-	public function getAlunoNotas($idMatricula) {
+	public function getAlunoNotas($idMatricula, $filters = null) {
 		$this->setSigaeduDb();
+
+		$elementoCurricular = $filters['elemento_curricular'] != null ? 'AND ec.id = ' . $filters['elemento_curricular'] : '';
+		$curso = $filters['curso'] != null ? 'AND cu.id = ' . $filters['curso'] : '';
 
 		$query = <<<QUERY
 SELECT
@@ -141,7 +149,9 @@ FROM
 	elemento_curricular ec
 
 WHERE
-	mt.id = '{$idMatricula}'
+	mt.id = {$idMatricula}
+    {$elementoCurricular}
+    {$curso}
 	AND mt.id = ra.matricula_id
 	AND av.id = ra.avaliacao_id
 	AND cl.id = av.classe_id
@@ -153,14 +163,18 @@ WHERE
 ORDER BY
 	n_matricula, id_elem_curric
 QUERY;
+
 		$result = $this->query($query);
 		$this->resetDb();
 
 		return $result;
 	}
 
-	public function getAlunoFaltas($idMatricula) {
+	public function getAlunoFaltas($idMatricula, $filters = null) {
 		$this->setSigaeduDb();
+
+		$elementoCurricular = $filters['elemento_curricular'] != null ? 'AND ec.id = ' . $filters['elemento_curricular'] : '';
+		$curso = $filters['curso'] != null ? 'AND ec.curso_id = ' . $filters['curso'] : '';
 
 		$query = <<<QUERY
 SELECT
@@ -184,7 +198,9 @@ FROM
 	elemento_matriz em
 
 WHERE
-    mt.id = '{$idMatricula}'
+    mt.id = {$idMatricula}
+    {$elementoCurricular}
+    {$curso}
 	AND mt.id = fa.matricula_id
 	AND cl.id = fa.classe_id
 	AND cl.id = au.classe_id
@@ -203,6 +219,29 @@ QUERY;
 		$this->resetDb();
 
 		return $result;
+	}
+
+	public function getAlunoElementos() {
+		$this->setSigaeduDb();
+
+		$query = <<<QUERY
+SELECT
+	id,
+	nome
+FROM
+	elemento_curricular
+WHERE curso_id IN (77, 79)
+ORDER BY nome
+QUERY;
+
+		$result = $this->query($query);
+		$this->resetDb();
+
+		$list = array();
+		foreach ($result as $res) {
+			$list += Set::combine($res, '{n}.id', '{n}.nome');
+		}
+		return $list;
 	}
 
 	private function setSigaeduDb() {

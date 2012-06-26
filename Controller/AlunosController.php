@@ -19,34 +19,64 @@ class AlunosController extends AppController {
  * @return void
  */
 	public function index() {
-
+		if ($this->request->is('post')) {
+			$this->Session->write('Aluno.Filters', $this->request->data[$this->modelClass]);
+		}
+		
+		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.n_matricula'));
+		$cursosIds = array_keys($cursos);
+		$this->Session->write('Aluno.Cursos.ids', $cursosIds);
+		$elementos = $this->Aluno->getAlunoElementos($this->Session->read('Aluno.Matricula.n_matricula'));
+		$this->set(compact('cursos', 'elementos'));
 	}
 
 	public function cursos() {
+		$this->autoRender = false;
+		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.n_matricula'));
 		if ($this->request->is('ajax')) {
 			return new CakeResponse(array(
-				'body' => json_encode($this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.n_matricula'))),
+				'body' => json_encode($cursos),
 				'type' => 'json',
 			));
 		}
+		return $cursos;
 	}
 
 	public function notas() {
+		$this->autoRender = false;
+		$notas = $this->Aluno->getAlunoNotas($this->Session->read('Aluno.Matricula.id_matricula'));
 		if ($this->request->is('ajax')) {
 			return new CakeResponse(array(
-				'body' => json_encode($this->Aluno->getAlunoNotas($this->Session->read('Aluno.Matricula.id_matricula'))),
+				'body' => json_encode($notas),
 				'type' => 'json',
 			));
 		}
+		return $notas;
 	}
 
 	public function faltas() {
+		$this->autoRender = false;
+		$faltas = $this->Aluno->getAlunoFaltas($this->Session->read('Aluno.Matricula.id_matricula'));
 		if ($this->request->is('ajax')) {
 			return new CakeResponse(array(
-				'body' => json_encode($this->Aluno->getAlunoFaltas($this->Session->read('Aluno.Matricula.id_matricula'))),
+				'body' => json_encode($faltas),
 				'type' => 'json',
 			));
 		}
+		return $faltas;
+	}
+	
+	public function avaliacoes_faltas() {
+		$this->autoRender = false;
+		$faltas = $this->Aluno->getAlunoFaltas($this->Session->read('Aluno.Matricula.id_matricula'), $this->Session->read('Aluno.Filters'));
+		$notas = $this->Aluno->getAlunoNotas($this->Session->read('Aluno.Matricula.id_matricula'), $this->Session->read('Aluno.Filters'));
+		if ($this->request->is('ajax')) {
+			return new CakeResponse(array(
+				'body' => json_encode(array($notas, $faltas)),
+				'type' => 'json',
+			));
+		}
+		return array($notas, $faltas);
 	}
 
 

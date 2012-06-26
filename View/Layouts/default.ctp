@@ -10,6 +10,7 @@
 		echo $this->Html->css(array(
 			'bootstrap',
 			'bootstrap-responsive',
+			'main',
 		));
 		echo $this->Html->script(array(
 			'jquery',
