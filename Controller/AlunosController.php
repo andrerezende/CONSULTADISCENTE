@@ -26,7 +26,7 @@ class AlunosController extends AppController {
 		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.n_matricula'));
 		$cursosIds = array_keys($cursos);
 		$this->Session->write('Aluno.Cursos.ids', $cursosIds);
-		$elementos = $this->Aluno->getAlunoElementos($this->Session->read('Aluno.Matricula.n_matricula'));
+		$elementos = $this->Aluno->getAlunoElementos($cursosIds);
 		$this->set(compact('cursos', 'elementos'));
 	}
 
