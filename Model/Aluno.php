@@ -221,8 +221,9 @@ QUERY;
 		return $result;
 	}
 
-	public function getAlunoElementos() {
+	public function getAlunoElementos($cursos) {
 		$this->setSigaeduDb();
+		$cursos = implode(',', $cursos);
 
 		$query = <<<QUERY
 SELECT
@@ -230,7 +231,7 @@ SELECT
 	nome
 FROM
 	elemento_curricular
-WHERE curso_id IN (77, 79)
+WHERE curso_id IN ({$cursos})
 ORDER BY nome
 QUERY;
 
