@@ -22,8 +22,8 @@ class AlunosController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Session->write('Aluno.Filters', $this->request->data[$this->modelClass]);
 		}
-		
-		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.n_matricula'));
+
+		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.id_pf'));
 		$cursosIds = array_keys($cursos);
 		$this->Session->write('Aluno.Cursos.ids', $cursosIds);
 		$elementos = $this->Aluno->getAlunoElementos($cursosIds);
@@ -32,7 +32,7 @@ class AlunosController extends AppController {
 
 	public function cursos() {
 		$this->autoRender = false;
-		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.n_matricula'));
+		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.id_matricula'));
 		if ($this->request->is('ajax')) {
 			return new CakeResponse(array(
 				'body' => json_encode($cursos),
@@ -65,7 +65,7 @@ class AlunosController extends AppController {
 		}
 		return $faltas;
 	}
-	
+
 	public function avaliacoes_faltas() {
 		$this->autoRender = false;
 		$faltas = $this->Aluno->getAlunoFaltas($this->Session->read('Aluno.Matricula.id_matricula'), $this->Session->read('Aluno.Filters'));

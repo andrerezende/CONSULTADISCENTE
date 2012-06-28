@@ -39,6 +39,7 @@
 						</tr>
 						<tr>
 							<th>AVALIAÇÃO</th>
+							<th>ETAPA</th>
 							<th>NOTA</th>
 						</tr>
 					</thead>

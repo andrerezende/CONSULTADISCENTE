@@ -33,6 +33,7 @@ AjaxTabHandler.prototype.handleResponseNotas = function(data, tabId) {
 	$(data).each(function(i, e) {
 		tr = $("<tr>");
 		tr.append($("<td>").text(e[0].desc_ava));
+		tr.append($("<td>").text(e[0].etapa_avaliacao));
 		tr.append($("<td>").text(e[0].nota));
 		$("#" + tabId + " tbody").append(tr);
 	});
