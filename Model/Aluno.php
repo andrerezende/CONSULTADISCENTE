@@ -86,12 +86,11 @@ WHERE
     AND mc.id = mt.matriz_curricular_id
     AND cu.id = mc.curso_id
     AND st.id = mt.status_aluno_curso_id
-LIMIT 1
 QUERY;
 		$result = $this->query($query);
 		$this->resetDb();
 
-		return current($result[0]);
+		return $result;
 	}
 
 	public function getAlunoCursos($alunoId) {
@@ -118,11 +117,7 @@ QUERY;
 		$result = $this->query($query);
 		$this->resetDb();
 
-		$list = array();
-		foreach ($result as $res) {
-			$list += Set::combine($res, '{n}.id_curso', '{n}.curso');
-		}
-		return $list;
+		return $result;
 	}
 
 	public function getAlunoNotas($idMatricula, $filters = null) {
@@ -161,7 +156,7 @@ FROM
 	estrutura_etapa_avaliacao_matriz_curricular eeamc
 
 WHERE
-	mt.id = {$idMatricula}
+	mt.aluno_id = {$idMatricula}
     {$curso}
 	AND av.id = ra.avaliacao_id
 	AND cl.id = ra.classe_id
@@ -179,10 +174,10 @@ WHERE
 	AND eeamc.data_fim_vigencia IS NULL
 
 ORDER BY
-	nome_elemento_curricular, etapa_avaliacao, desc_ava
+	ec.nome, ea.nome, av.descricao
 QUERY;
 
-		$result = $this->query($query);
+    	$result = $this->query($query);
 		$this->resetDb();
 
 		return $result;
@@ -215,7 +210,7 @@ FROM
 	elemento_matriz em
 
 WHERE
-    mt.id = {$idMatricula}
+    mt.aluno_id = {$idMatricula}
     {$elementoCurricular}
 	AND mt.id = fa.matricula_id
 	AND cl.id = fa.classe_id
@@ -228,7 +223,7 @@ WHERE
 	AND ec.id = em.elemento_curricular_id
 
 ORDER BY
-	data_aula
+	au.data_aula
 QUERY;
 
 		$result = $this->query($query);

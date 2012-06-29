@@ -32,8 +32,8 @@ AjaxTabHandler.prototype.handleResponseNotas = function(data, tabId) {
 	$("#" + tabId + " tbody").empty();
 	$(data).each(function(i, e) {
 		tr = $("<tr>");
-		tr.append($("<td>").text(e[0].desc_ava));
 		tr.append($("<td>").text(e[0].etapa_avaliacao));
+		tr.append($("<td>").text(e[0].desc_ava));
 		tr.append($("<td>").text(e[0].nota));
 		$("#" + tabId + " tbody").append(tr);
 	});
@@ -73,7 +73,6 @@ AjaxTabHandler.prototype.handleResponseAvaliacoesFaltas = function(data, tabId) 
 }
 
 $(document).ready(function() {
-//	$(".tab").click(function(e) {
 	var ajaxTabHandler = new AjaxTabHandler("avaliacoes_faltas-tab");
 
 	tab = $("#avaliacoes_faltas-tab");
@@ -92,5 +91,4 @@ $(document).ready(function() {
 			$("#loader", tabId).remove();
 		}
 	});
-//	});
 });

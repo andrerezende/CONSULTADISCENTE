@@ -24,9 +24,9 @@
 					echo $this->Form->inputs(array(
 						'legend' => false,
 						'fieldset' => false,
-						'aluno' => array('readonly' => true, 'value' => $this->Session->read('Aluno.Matricula.nome')),
-						'curso' => array('type' => 'select', 'options' => $cursos, 'value' => $this->Session->read('Aluno.Filters.curso')),
-						'elemento_curricular' => array('type' => 'select', 'options' => $elementos, 'value' => $this->Session->read('Aluno.Filters.elemento_curricular')),
+						'aluno' => array('readonly' => true, 'value' => $this->Session->read('Aluno.0.0.nome')),
+						'curso' => array('type' => 'select', 'options' => $cursos, 'value' => $this->Session->read('Filters.curso')),
+						'elemento_curricular' => array('type' => 'select', 'options' => $elementos, 'value' => $this->Session->read('Filters.elemento_curricular')),
 					));
 					?>
 					<?php echo $this->Form->button('Filtrar', array('class' => 'btn btn-primary'));?>
@@ -38,8 +38,8 @@
 							<th class="title" colspan="2">AVALIAÇÕES</th>
 						</tr>
 						<tr>
-							<th>AVALIAÇÃO</th>
 							<th>ETAPA</th>
+							<th>AVALIAÇÃO</th>
 							<th>NOTA</th>
 						</tr>
 					</thead>

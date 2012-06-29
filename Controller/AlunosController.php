@@ -20,56 +20,25 @@ class AlunosController extends AppController {
  */
 	public function index() {
 		if ($this->request->is('post')) {
-			$this->Session->write('Aluno.Filters', $this->request->data[$this->modelClass]);
+			$this->Session->write('Filters', $this->request->data[$this->modelClass]);
 		}
 
-		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.id_pf'));
-		$cursosIds = array_keys($cursos);
-		$this->Session->write('Aluno.Cursos.ids', $cursosIds);
-		$elementos = $this->Aluno->getAlunoElementos($cursosIds);
+		$aluno = $this->Session->read('Aluno');
+		$cursos = array();
+		foreach($aluno as $matricula) {
+			if (isset($matricula[0]['id_curso'])) {
+				$cursos += array($matricula[0]['id_curso'] => $matricula[0]['curso']);
+			}
+		}
+		$this->Session->write('Cursos', $cursos);
+		$elementos = $this->Aluno->getAlunoElementos(array_keys($cursos));
 		$this->set(compact('cursos', 'elementos'));
-	}
-
-	public function cursos() {
-		$this->autoRender = false;
-		$cursos = $this->Aluno->getAlunoCursos($this->Session->read('Aluno.Matricula.id_matricula'));
-		if ($this->request->is('ajax')) {
-			return new CakeResponse(array(
-				'body' => json_encode($cursos),
-				'type' => 'json',
-			));
-		}
-		return $cursos;
-	}
-
-	public function notas() {
-		$this->autoRender = false;
-		$notas = $this->Aluno->getAlunoNotas($this->Session->read('Aluno.Matricula.id_matricula'));
-		if ($this->request->is('ajax')) {
-			return new CakeResponse(array(
-				'body' => json_encode($notas),
-				'type' => 'json',
-			));
-		}
-		return $notas;
-	}
-
-	public function faltas() {
-		$this->autoRender = false;
-		$faltas = $this->Aluno->getAlunoFaltas($this->Session->read('Aluno.Matricula.id_matricula'));
-		if ($this->request->is('ajax')) {
-			return new CakeResponse(array(
-				'body' => json_encode($faltas),
-				'type' => 'json',
-			));
-		}
-		return $faltas;
 	}
 
 	public function avaliacoes_faltas() {
 		$this->autoRender = false;
-		$faltas = $this->Aluno->getAlunoFaltas($this->Session->read('Aluno.Matricula.id_matricula'), $this->Session->read('Aluno.Filters'));
-		$notas = $this->Aluno->getAlunoNotas($this->Session->read('Aluno.Matricula.id_matricula'), $this->Session->read('Aluno.Filters'));
+		$faltas = $this->Aluno->getAlunoFaltas($this->Session->read('Aluno.0.0.id_pf'), $this->Session->read('Filters'));
+		$notas = $this->Aluno->getAlunoNotas($this->Session->read('Aluno.0.0.id_pf'), $this->Session->read('Filters'));
 		if ($this->request->is('ajax')) {
 			return new CakeResponse(array(
 				'body' => json_encode(array($notas, $faltas)),
@@ -93,7 +62,7 @@ class AlunosController extends AppController {
 				$this->Aluno->id = $this->Auth->user('id');
 				$this->Aluno->saveField('ultimo_login', date('Y-m-d H:i:s'));
 
-				$this->Session->write('Aluno.Matricula', $this->Aluno->findMatriculaAluno());
+				$this->Session->write('Aluno', $this->Aluno->findMatriculaAluno());
 
 				$this->Session->setFlash('Login feito com sucesso', 'flash_auth', array(), 'auth');
 				$this->redirect($this->Auth->redirect());

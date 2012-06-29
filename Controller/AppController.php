@@ -111,7 +111,7 @@ class AppController extends Controller {
 	}
 
 	protected function _setUpUser() {
-		$userData = $this->Session->read('Auth.User');
+		$userData = $this->Auth->user();
 		if ($userData) {
 			$this->set(compact('userData'));
 		}
