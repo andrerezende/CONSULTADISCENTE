@@ -1,4 +1,4 @@
-<?php echo $this->Html->script('alunos_index', array('inline' => false));?>
+<?php echo $this->Html->script(array('addItems', 'changeHandler', 'alunos_index'), array('inline' => false));?>
 
 <div class="alunos index">
 	<div class="tabbable">
@@ -27,7 +27,7 @@
 						'matriculas' => array('type' => 'select', 'options' => $matriculas, 'style' => 'display: none;', 'label' => false, 'empty' => false),
 						'aluno' => array('readonly' => true, 'value' => $this->Session->read('Aluno.0.0.nome')),
 						'curso' => array('type' => 'select', 'options' => $cursos),
-						'elemento_curricular' => array('type' => 'select', 'options' => $elementos),
+						'elemento_curricular' => array('type' => 'select'),
 					));
 					?>
 					<?php echo $this->Form->button('Filtrar', array('class' => 'btn btn-primary'));?>

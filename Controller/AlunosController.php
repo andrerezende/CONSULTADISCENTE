@@ -34,8 +34,18 @@ class AlunosController extends AppController {
 		}
 		$this->Session->write('Cursos', $cursos);
 		$this->Session->write('Matriculas', $matriculas);
-		$elementos = $this->Aluno->getAlunoElementos(array_keys($cursos));
 		$this->set(compact('cursos', 'elementos', 'matriculas'));
+	}
+
+	public function getElementosCurriculares() {
+		$this->layout = 'ajax';
+		Configure::write('debug', 0);
+		$this->autoRender = false;
+		if ($this->request->is('ajax')) {
+			$curso = $this->request->data['curso'];
+			$elementos = $this->Aluno->getAlunoElementos($curso);
+			return json_encode($elementos);
+		}
 	}
 
 	public function avaliacoes_faltas() {

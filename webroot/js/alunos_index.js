@@ -73,6 +73,12 @@ AjaxTabHandler.prototype.handleResponseAvaliacoesFaltas = function(data, tabId) 
 }
 
 $(document).ready(function() {
+	$("#AlunoCurso").changeHandler({
+		url: "/alunos/getElementosCurriculares",
+		postName: "curso",
+		updateId: "#AlunoElementoCurricular"
+	});
+	
 	$("#AlunoIndexForm").validate({
 		rules: {
 			"data[Aluno][curso]": {
