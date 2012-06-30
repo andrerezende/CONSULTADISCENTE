@@ -25,20 +25,33 @@ class AlunosController extends AppController {
 
 		$aluno = $this->Session->read('Aluno');
 		$cursos = array();
+		$matriculas = array();
 		foreach($aluno as $matricula) {
 			if (isset($matricula[0]['id_curso'])) {
 				$cursos += array($matricula[0]['id_curso'] => $matricula[0]['curso']);
+				$matriculas += array($matricula[0]['id_curso'] => $matricula[0]['id_matricula']);
 			}
 		}
 		$this->Session->write('Cursos', $cursos);
+		$this->Session->write('Matriculas', $matriculas);
 		$elementos = $this->Aluno->getAlunoElementos(array_keys($cursos));
-		$this->set(compact('cursos', 'elementos'));
+		$this->set(compact('cursos', 'elementos', 'matriculas'));
 	}
 
 	public function avaliacoes_faltas() {
 		$this->autoRender = false;
-		$faltas = $this->Aluno->getAlunoFaltas($this->Session->read('Aluno.0.0.id_pf'), $this->Session->read('Filters'));
-		$notas = $this->Aluno->getAlunoNotas($this->Session->read('Aluno.0.0.id_pf'), $this->Session->read('Filters'));
+		$notas = $this->Aluno->getAlunoNotas(
+			$this->request->query['elementoCurricular'],
+			$this->request->query['matricula'],
+			$this->request->query['curso'],
+			$this->Session->read('Filters')
+		);
+		$faltas = $this->Aluno->getAlunoFaltas(
+			$this->request->query['elementoCurricular'],
+			$this->request->query['matricula'],
+			$this->request->query['curso'],
+			$this->Session->read('Filters')
+		);
 		if ($this->request->is('ajax')) {
 			return new CakeResponse(array(
 				'body' => json_encode(array($notas, $faltas)),

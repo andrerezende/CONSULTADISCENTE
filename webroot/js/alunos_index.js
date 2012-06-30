@@ -73,22 +73,50 @@ AjaxTabHandler.prototype.handleResponseAvaliacoesFaltas = function(data, tabId) 
 }
 
 $(document).ready(function() {
-	var ajaxTabHandler = new AjaxTabHandler("avaliacoes_faltas-tab");
+	$("#AlunoIndexForm").validate({
+		rules: {
+			"data[Aluno][curso]": {
+				"required": true
+			},
+			"data[Aluno][elemento_curricular]": {
+				"required": true
+			},
+		},
+		messages: {
+			"data[Aluno][curso]": {
+				"required": ""
+			},
+			"data[Aluno][elemento_curricular]": {
+				"required": ""
+			}
+		},
+		submitHandler: function() {
+			var ajaxTabHandler = new AjaxTabHandler("avaliacoes_faltas-tab");
 
-	tab = $("#avaliacoes_faltas-tab");
-	tabId = $("a", tab).attr("href");
-	$.ajax({
-		url: $("#avaliacoes_faltas-tab").attr("href"),
-		dataType: "json",
-		success: function(data, textStatus, jqXHR) {
-			ajaxTabHandler.handleResponse(data, tabId);
-		},
-		beforeSend: function(jqXHR, settings) {
-			$(tabId).append("<p id=\"loader\">Carregando...</p>");
-		},
-		complete: function(jqXHR, textStatus) {
-			console.log(textStatus)
-			$("#loader", tabId).remove();
+			tab = $("#avaliacoes_faltas-tab");
+			tabId = $("a", tab).attr("href");
+			matricula = $("#AlunoMatriculas option[value=" + $("#AlunoCurso option:selected").val() + "]").text();
+			curso = $("#AlunoCurso option:selected").val();
+			elementoCurricular = $("#AlunoElementoCurricular option:selected").val();
+			url = $("#avaliacoes_faltas-tab").attr("href") + '?elementoCurricular=' + elementoCurricular + '&matricula=' + matricula + "&curso=" + curso;
+			$.ajax({
+				url: url,
+				type: 'GET',
+				dataType: "json",
+				success: function(data, textStatus, jqXHR) {
+					ajaxTabHandler.handleResponse(data, tabId);
+				},
+				beforeSend: function(jqXHR, settings) {
+					$(tabId).append("<p id=\"loader\">Carregando...</p>");
+					$("#faltas-table tbody").empty();
+					$("#avaliacoes-table tbody").empty();
+				},
+				complete: function(jqXHR, textStatus) {
+					$("#loader", tabId).remove();
+				}
+			});
+			return false;
 		}
 	});
+
 });

@@ -120,10 +120,8 @@ QUERY;
 		return $result;
 	}
 
-	public function getAlunoNotas($idMatricula, $filters = null) {
+	public function getAlunoNotas($elementoCurricular, $matricula, $curso, $filters = null) {
 		$this->setSigaeduDb();
-
-		$curso = $filters['curso'] != null ? 'AND cu.id = ' . $filters['curso'] : '';
 
 		$query = <<<QUERY
 SELECT
@@ -156,8 +154,7 @@ FROM
 	estrutura_etapa_avaliacao_matriz_curricular eeamc
 
 WHERE
-	mt.aluno_id = {$idMatricula}
-    {$curso}
+	mt.id = ra.matricula_id
 	AND av.id = ra.avaliacao_id
 	AND cl.id = ra.classe_id
 	AND av.etapa_avaliacao_id = ea.id
@@ -168,25 +165,27 @@ WHERE
 	AND em.elemento_curricular_id = ec.id
 	AND cl.disciplina_id = em.elemento_curricular_id
 	AND cl.matriz_id = em.matriz_curricular_id
+
 	AND eaa.id = ea.estrutura_etapa_avaliacao_id
 	AND eeamc.estrutura_etapa_avaliacao_id = eaa.id
 	AND eeamc.matriz_curricular_id = mc.id
 	AND eeamc.data_fim_vigencia IS NULL
 
+	AND mt.id = {$matricula}
+	AND cu.id = {$curso}
+
 ORDER BY
 	ec.nome, ea.nome, av.descricao
 QUERY;
 
-    	$result = $this->query($query);
+		$result = $this->query($query);
 		$this->resetDb();
 
 		return $result;
 	}
 
-	public function getAlunoFaltas($idMatricula, $filters = null) {
+	public function getAlunoFaltas($elementoCurricular, $matricula, $filters = null) {
 		$this->setSigaeduDb();
-
-		$elementoCurricular = $filters['elemento_curricular'] != null ? 'AND ec.id = ' . $filters['elemento_curricular'] : '';
 
 		$query = <<<QUERY
 SELECT
@@ -210,8 +209,8 @@ FROM
 	elemento_matriz em
 
 WHERE
-    mt.aluno_id = {$idMatricula}
-    {$elementoCurricular}
+	mt.id = {$matricula}
+	AND ec.id = {$elementoCurricular}
 	AND mt.id = fa.matricula_id
 	AND cl.id = fa.classe_id
 	AND cl.id = au.classe_id

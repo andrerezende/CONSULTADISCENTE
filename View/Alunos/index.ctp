@@ -24,9 +24,10 @@
 					echo $this->Form->inputs(array(
 						'legend' => false,
 						'fieldset' => false,
+						'matriculas' => array('type' => 'select', 'options' => $matriculas, 'style' => 'display: none;', 'label' => false, 'empty' => false),
 						'aluno' => array('readonly' => true, 'value' => $this->Session->read('Aluno.0.0.nome')),
-						'curso' => array('type' => 'select', 'options' => $cursos, 'value' => $this->Session->read('Filters.curso')),
-						'elemento_curricular' => array('type' => 'select', 'options' => $elementos, 'value' => $this->Session->read('Filters.elemento_curricular')),
+						'curso' => array('type' => 'select', 'options' => $cursos),
+						'elemento_curricular' => array('type' => 'select', 'options' => $elementos),
 					));
 					?>
 					<?php echo $this->Form->button('Filtrar', array('class' => 'btn btn-primary'));?>
