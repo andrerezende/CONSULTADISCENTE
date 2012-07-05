@@ -125,6 +125,7 @@ QUERY;
 
 		$query = <<<QUERY
 SELECT
+	ec.id AS ID_ELEMENTO,
 	mt.id AS ID_MATRICULA,
 	av.id AS ID_AVA,
 	av.descricao AS DESC_AVA,
