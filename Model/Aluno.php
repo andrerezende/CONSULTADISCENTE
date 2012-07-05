@@ -173,6 +173,7 @@ WHERE
 
 	AND mt.id = {$matricula}
 	AND cu.id = {$curso}
+	AND ec.id = {$elementoCurricular}
 
 ORDER BY
 	ec.nome, ea.nome, av.descricao
