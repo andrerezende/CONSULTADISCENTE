@@ -26,7 +26,7 @@ class AppController extends Controller {
 		'Auth',
 		'Session',
 		'Paginator',
-		'DebugKit.Toolbar',
+		//'DebugKit.Toolbar',
 		'RequestHandler',
 	);
 

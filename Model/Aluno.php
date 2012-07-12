@@ -186,8 +186,13 @@ QUERY;
 		return $result;
 	}
 
-	public function getAlunoFaltas($elementoCurricular, $matricula, $filters = null) {
+	public function getAlunoFaltas($elementoCurricular, $matricula, $filters = null, $classe = null) {
 		$this->setSigaeduDb();
+
+		$classeCondition = '';
+		if ($classe != null) {
+			$classeCondition = ' AND cl.id = ' . $classe;
+		}
 
 		$query = <<<QUERY
 SELECT
@@ -213,6 +218,7 @@ FROM
 WHERE
 	mt.id = {$matricula}
 	AND ec.id = {$elementoCurricular}
+	{$classeCondition}
 	AND mt.id = fa.matricula_id
 	AND cl.id = fa.classe_id
 	AND cl.id = au.classe_id

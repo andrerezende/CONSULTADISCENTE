@@ -59,8 +59,8 @@ class AlunosController extends AppController {
 		$faltas = $this->Aluno->getAlunoFaltas(
 			$this->request->query['elementoCurricular'],
 			$this->request->query['matricula'],
-			$this->request->query['curso'],
-			$this->Session->read('Filters')
+			$this->Session->read('Filters'),
+			$notas[0][0]['id_classe']
 		);
 		if ($this->request->is('ajax')) {
 			return new CakeResponse(array(
