@@ -11,14 +11,14 @@ class Aluno extends AppModel {
 
 	public function beforeSave() {
 		if (isset($this->data[$this->alias]['senha'])) {
-			$this->data[$this->alias]['senha'] = AuthComponent::password($this->data[$this->alias]['senha']);
+			$this->data[$this->alias]['senha'] = Security::hash($this->data[$this->alias]['senha'], 'md5', false);
 		}
 	}
 
 	public function alterarSenha($data) {
 		$pass = $this->field('senha');
 
-		if ($pass == AuthComponent::password($data[$this->alias]['senha_atual'])) {
+		if ($pass == Security::hash($data[$this->alias]['senha_atual'], 'md5', false)) {
 			if ($data[$this->alias]['nova_senha'] == $data[$this->alias]['confirmar_senha']) {
 				$this->set(array('senha' => $data[$this->alias]['nova_senha']));
 				return $this->save();
