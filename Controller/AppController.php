@@ -64,6 +64,7 @@ class AppController extends Controller {
  * @return void
  */
 	protected function _setUpAuth() {
+		Security::setHash('md5');
 		$this->Auth->authenticate = array(
 			AuthComponent::ALL => array(
 				'userModel' => 'Aluno',
